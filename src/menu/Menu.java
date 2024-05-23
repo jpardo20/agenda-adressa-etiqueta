@@ -22,8 +22,7 @@ public class Menu {
             mostraMenu(opcions, titol, missatge);
             try {
                 esCorrecte = true;
-                System.out.print(missatge + "(1.." + MAXIM + "): ");
-                opcioEscollida = Teclat.llegirCaracter();
+                opcioEscollida = Teclat.llegirEnter();
                 if ((opcioEscollida < 1) || (opcioEscollida > MAXIM)) {
                     System.out.println("Error!! Cal que entris una de les opcions diponibles!");
                     esCorrecte = false;

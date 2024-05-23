@@ -9,7 +9,10 @@ public class Teclat {
                     new InputStreamReader(System.in));
     // Mètode per llegir una cadena String fins al
     // final de la línia CR/LF
-    public static String llegirCadena() {
+    public static String llegirCadena(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         try {
             // llegir del canal i retornar el
             // resultat sense processar perquè
@@ -23,7 +26,10 @@ public class Teclat {
         }
     }
     // Mètode per llegir un enter de mida int
-    public static int llegirEnterCtrl() {
+    public static int llegirEnterCtrl(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         int enterATornar = -1;
 
             try {
@@ -54,7 +60,10 @@ public class Teclat {
        return enterATornar;
     }
     // Mètode per llegir un enter de mida int
-    public static int llegirEnter() {
+    public static int llegirEnter(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         try {
             String cadena = canal.readLine();
             // Llegir una línia del canal
@@ -70,7 +79,10 @@ public class Teclat {
         }
     }
     // Mètode per llegir un enter de mida double
-    public static double llegirDouble() {
+    public static double llegirDouble(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         try {
             String cadena = canal.readLine();
             // Llegir una línia del canal
@@ -86,7 +98,10 @@ public class Teclat {
         }
     }
     // Mètode per llegir un enter de mida double
-    public static long llegirLong() {
+    public static long llegirLong(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         try {
             String cadena = canal.readLine();
             // Llegir una línia del canal
@@ -101,7 +116,10 @@ public class Teclat {
             return(0); // Línia de codi inaccessible
         }
     }
-    public static char llegirCaracter() {
+    public static char llegirCaracter(String ... missatge) {
+        if(missatge.length==1){
+            System.out.print(missatge[0]);
+        }
         try {
             String s = canal.readLine();
             return s.length() == 0 ? llegirCaracter() : s.charAt(0);
