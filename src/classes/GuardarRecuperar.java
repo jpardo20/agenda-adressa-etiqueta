@@ -71,8 +71,7 @@ public class GuardarRecuperar {
             throws IOException {
         // desa el contingut de la col·lecció donada en el primer paràmetre
         // a l'arxiu especificat pel segon paràmetre.
-
-        boolean guardatCorrecte = false;
+         boolean guardatCorrecte = false;
         if (getLlistaContactes().isEmpty()) {
             System.out.println("Agenda buida, no hi ha res a guardar!");
         } else {
@@ -83,43 +82,65 @@ public class GuardarRecuperar {
                 // Tipus de canal
                 for (Contacte contacte : getLlistaContactes()) {
                     // Escriure el nom del contacte ...
-
+                    bw.write(contacte.getNom());
+                    bw.newLine();
                     // Escriure el cognom del contacte ...
-
+                    bw.write(contacte.getCognom());
+                    bw.newLine();
                     // Obtenir TOTS els telèfons del contacte per poder
                     // iterar sobre TOTS els telèfons del contacte.
                     for (Telefon telefon : contacte.getLlistaTelefons()) {
                         // Escriure el número del telèfon del contacte
-
+                         bw.write(telefon.getNumero() + SEPARADOR_ETIQUETA_TELEFON + telefon.getEtiqueta());
+                         bw.newLine();
                         // seguit del separador de l'etiqueta del telèfon i el número de teléfon.
-
+                         bw.write(MARCA_FINAL_TELEFONS);
+                         bw.newLine();
                         // més escriure l'etiqueta del telèfon del contacte més el salt de línia
-
+                         if (contacte.getLlistaAdreces() != null) {
+                             for (Adressa adressa : contacte.getLlistaAdreces()) {
+                                   bw.write(adressa.getEtiqueta());
+                                   bw.newLine();
+                                   bw.write(adressa.getCarrer());
+                                   bw.newLine();
+                                   bw.write(adressa.getNumeroCarrer());
+                                   bw.newLine();
+                                   bw.write(adressa.getCodiPostal());
+                                   bw.newLine();
+                                   bw.write(adressa.getCiutat());
+                                   bw.newLine();
+                                   bw.write(adressa.getPais());
+                                   bw.newLine();
+                            }
+                          bw.write(MARCA_FINAL_ADRECES);
+                          bw.newLine();
+                        }
                     }
-
-                    // desar marca de MARCA_FINAL_TELEFONS per indicar
-                    // que ja no hi ha més telèfons del contacte
 
                     if (contacte.getLlistaAdreces() == null) {
                         System.out.printf("No hi ha adreces per guardar!");
                     } else {
                         // Obtenir TOTES les adreces del contacte per poder
                         for (Adressa adressa : contacte.getLlistaAdreces()) {
-
-                            // iterar sobre TOTES les adreces del contacte.
-
-                            // Escriure el nom del carrer de l'adreça del contacte més el salt de línia
-
-                            // Escriure el número del carrer de l'adreça del contacte més el salt de línia
-
-                            // Escriure el codi postal del carrer de l'adreça del contacte més el salt de línia
-
-                            // Escriure el nom de la ciutat de l'adreça del contacte més el salt de línia
-
-                            // Escriure el nom del país de l'adreça del contacte més el salt de línia
+                           // iterar sobre TOTES les adreces del contacte.
+                          for (Adressa adressa : contacte.getLlistaAdreces()) {
+                             bw.write(adressa.getEtiqueta());
+                             bw.newLine(); // Saltar a la siguiente línea en el archivo
+                             bw.write(adressa.getCarrer());
+                             bw.newLine();
+                             bw.write(Integer.toString(adressa.getNumeroCarrer()));
+                             bw.newLine();
+                             bw.write(adressa.getCodiPostal());
+                             bw.newLine();
+                             bw.write(adressa.getCiutat());
+                             bw.newLine();
+                             bw.write(adressa.getPais());
+                             bw.newLine();
+                          }
                         }
-
-                        // desar marca de MARCA_FINAL_ADRESSES de la seqüència de telèfons  més el salt de línia
+                        
+                       bw.write(MARCA_FINAL_ADRECES)
+                       bw.newLine();
                     }
                 }
                 System.out.println("Agenda guardada al fitxer " +
