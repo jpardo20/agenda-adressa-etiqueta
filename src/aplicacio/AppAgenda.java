@@ -4,17 +4,47 @@ import classes.*;
 import eines.EinesJoan;
 import menu.Menu;
 
-import java.io.IOException;
+import java.io.*;
 
-import static classes.GuardarRecuperar.guardarAgenda;
+import static eines.EinesJoan.pitjaIntroPerContinuar;
+import static versioAlumnes.SolucioAlumnes.guardarAgenda;
+
 import static classes.GuardarRecuperar.recuperarAgenda;
 import static eines.EinesJoan.fitxerTrobat;
-
 
 public class AppAgenda {
     private static final String NOM_FITXER = "agenda";
     private static final String EXTENSIO_FITXER = ".ajp";
     private static Agenda agenda = new Agenda();
+
+    private static void afegirContacteFix() {
+        String nom = "Alfons";
+        String cognom = "Palacios";
+
+        Contacte contacte = new Contacte(nom, cognom);
+
+        int[] numeroTelefon = {621233456,934561232,931696500 };
+        String[] etiqueta = {"mòbil", "casa", "feina"};
+
+        for (int i = 0; i < numeroTelefon.length; i++) {
+            Telefon telefon = new Telefon(numeroTelefon[i], etiqueta[i]);
+            agenda.afegirTelefonContacte(contacte, telefon);
+        }
+
+        String[] etiquetaAdressaContacte = {"casa","feina"};
+        String[] carrerConctacte = {"Avinguda de Puig i Cadafalch","Av. Ernest Lluch"};
+        int[] numeroCarrerConctacte = {154, 32};
+        String[] ciutatContacte = {"Mataró","Mataró"};
+        String[] codiPostalContacte = {"08302","08302"};
+        String[] paisContacte = {"Espanya", "Espanya"};
+        for (int i = 0; i < etiquetaAdressaContacte.length; i++) {
+            Adressa adresssaAdressaContacte = new Adressa(etiquetaAdressaContacte[i],
+                    carrerConctacte[i], numeroCarrerConctacte[i], ciutatContacte[i],
+                    codiPostalContacte[i], paisContacte[i]);
+            agenda.afegirAdressaContacte(contacte, adresssaAdressaContacte);
+        }
+        System.out.println("Adreces FIXES del contacte afegides amb èxit!!");
+    }
 
     private static void afegirContacte() {
         EinesJoan.pintaComSubTitol("Afegir Dades del Contacte");
@@ -37,11 +67,10 @@ public class AppAgenda {
         String ciutatContacte = Teclat.llegirCadena("Ciutat: ");
         String codiPostalContacte = Teclat.llegirCadena("Codi postal: ");
         String paisContacte = Teclat.llegirCadena("País: ");
-        Adressa adresssaAdressaContacte = new Adressa(
+        Adressa adresssaAdressaContacte = new Adressa(etiquetaAdressaContacte,
                 carrerConctacte, numeroCarrerConctacte, ciutatContacte,
-                codiPostalContacte, paisContacte,
-                etiquetaAdressaContacte);
-
+                codiPostalContacte, paisContacte);
+        agenda.afegirAdressaContacte(contacte, adresssaAdressaContacte);
         System.out.println("Adreça contacte afegida amb èxit!!");
         System.out.println("Contacte afegit amb èxit!");
     }
@@ -107,18 +136,15 @@ public class AppAgenda {
     }
     public static void mostrarContactes() {
         for (Contacte contacte : agenda.getLlistaContactes()) {
-            System.out.println("Nom: " + contacte.getNom());
-            System.out.println("Cognom: " + contacte.getCognom());
-            System.out.println("Telèfons:");
+            System.out.format("Contacte: %s %s\n",
+                        contacte.getNom(), contacte.getCognom());
+            System.out.format("Telèfons (%d): \n", contacte.getLlistaTelefons().size());
             for (Telefon telefon : contacte.getLlistaTelefons()) {
-                System.out.format("%s", telefon.toString());
-                if(telefon != null){
-                    System.out.println();
-                }
+                System.out.format("\t%s\n", telefon.toString());
             }
-            System.out.println("Adreces:");
+            System.out.format("Adreces (%d): \n", contacte.getLlistaAdreces().size());
             for (Adressa adressa : contacte.getLlistaAdreces()) {
-                System.out.format("%s", adressa.toString());
+                System.out.format("\t%s", adressa.toString());
                 if(adressa != null){
                     System.out.println();
                 }
@@ -149,16 +175,72 @@ public class AppAgenda {
                 "Modificar Contacte",
                 "Eliminar Contacte",
                 "Mostrar Contactes",
+                "Afegir Contacte FIX",
                 "Sortir"
         };
 
         String nomFitxerAmbAgenda = NOM_FITXER + EXTENSIO_FITXER;
+
+        BufferedWriter fitxer = new BufferedWriter(new FileWriter(nomFitxerAmbAgenda));
+
+        fitxer.write("Joan" + "\n");
+        fitxer.write("Pardo" + "\n");
+        fitxer.write("629364567#Mòbil" + "\n");
+        fitxer.write("933236456#Casa" + "\n");
+        fitxer.write("931696500#Feina" + "\n");
+        fitxer.write("M_F_T" + "\n");
+        fitxer.write("Casa" + "\n");
+        fitxer.write("carrer Muntaner" + "\n");
+        fitxer.write("54" + "\n");
+        fitxer.write("08456" + "\n");
+        fitxer.write("Barcelona" + "\n");
+        fitxer.write("Espanya" + "\n");
+        fitxer.write("Feina" + "\n");
+        fitxer.write("Av. Ernest Lluch" + "\n");
+        fitxer.write("32" + "\n");
+        fitxer.write("08302" + "\n");
+        fitxer.write("Mataró" + "\n");
+        fitxer.write("Espanya" + "\n");
+        fitxer.write("M_F_A");
+        fitxer.close();
+        System.out.printf("Fitxer Restaura't!");
+
         boolean sortir = false;
         // Mirem si hi ha un arxiu amb el nom del fitxer amb l'Agenda
         if(fitxerTrobat(nomFitxerAmbAgenda) != null){
             // S'ha trobat un arxiu
             agenda = new Agenda(recuperarAgenda(nomFitxerAmbAgenda));
         }
+
+
+
+        afegirContacteFix();
+        System.out.printf("afegirContacteFix");
+        pitjaIntroPerContinuar();
+
+        mostrarContactes();
+        System.out.printf("afegirContacteFix");
+        pitjaIntroPerContinuar();
+
+//        GuardarRecuperarSol.guardarAgenda(nomFitxerAmbAgenda);
+        guardarAgenda(nomFitxerAmbAgenda);
+        recuperarAgenda(nomFitxerAmbAgenda);
+        mostrarContactes();
+        System.out.printf("FINAL");
+        pitjaIntroPerContinuar();
+
+        System.out.printf("Mostra fitxer final");
+        BufferedReader fitxerFinal = new BufferedReader(new FileReader(nomFitxerAmbAgenda));
+
+        String linia;
+        linia = fitxerFinal.readLine();
+        while (linia != null) {
+            System.out.printf("%s\n", linia);
+            linia = fitxerFinal.readLine();
+        }
+        System.exit(0);
+
+
         while (!sortir) {
             int opcio = Menu.obteOpcioMenu(opcions,
                     "Menu Principal",
@@ -180,6 +262,11 @@ public class AppAgenda {
                     mostrarContactes();
                     break;
                 case 6:
+                    mostrarContactes();
+                    afegirContacteFix();
+                    mostrarContactes();
+                    break;
+                case 7:
                     guardarAgenda(nomFitxerAmbAgenda);
                     sortir = true;
                     EinesJoan.pintaComiat();

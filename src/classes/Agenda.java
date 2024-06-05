@@ -49,16 +49,16 @@ public class Agenda {
             }
         }
     }
-//    public void afegirAdressaContacte(Contacte _contacte, AdressaEtiqueta _adressa) {
-//        for (Contacte contacte : llistaContactes) {
-//            if (contacte.equals(_contacte)) {
-//                contacte.afegirAdressa(_adressa);
-//                return;
-//            }
-//        }
-//        _contacte.afegirTelefon(telefonRebut);
-//        llistaContactes.add(_contacte);
-//    }
+    public void afegirAdressaContacte(Contacte _contacte, Adressa _adressa) {
+        for (Contacte contacte : llistaContactes) {
+            if (contacte.equals(_contacte)) {
+                contacte.afegirAdressa(_adressa);
+                return;
+            }
+        }
+        llistaContactes.add(_contacte);
+    }
+
     public LinkedList<Contacte> buscaContactePerNom(String nomContacteABuscar) {
         LinkedList<Contacte> contactesTrobats = new LinkedList<>();
         for (Contacte contacte : llistaContactes) {

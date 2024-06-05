@@ -11,17 +11,17 @@ public class Adressa {
     private String etiqueta;
     // Constructors.
     // Constructor TOTS els paràmetres.
-    public Adressa(String _carrer,
+    public Adressa(String _etiqueta,
+                   String _carrer,
                    int _numeroCarrer,
                    String _ciutat,
                    String _codiPostal,
-                   String _pais,
-                   String _etiqueta) {
+                   String _pais) {
         this.carrer = _carrer;
         this.numeroCarrer = _numeroCarrer;
-        this.ciutat = _ciutat;
         this.codiPostal = _codiPostal;
         this.pais = _pais;
+        this.ciutat = _ciutat;
         this.etiqueta = _etiqueta;
     }
     // Getters i Setters.
@@ -66,8 +66,6 @@ public class Adressa {
 
     // Mètodes.
     // Mètodes Comúns
-    // Mètodes.
-    // Mètodes Comúns
     @Override
     public String toString() {
         return "\t" + this.etiqueta.toLowerCase() + ":\t" +
@@ -75,4 +73,9 @@ public class Adressa {
                 getCodiPostal() + " - " + getCiutat() + " | " +
                 getPais();
     }
+
+//    @Override
+//    public String toString() {
+//        return  "\t" + this.etiqueta.toLowerCase() + ":\t" + this.numeroTelefon;
+//    }
 }
