@@ -190,6 +190,7 @@ public class AppAgenda {
             agenda.afegirAdressaContacte(contacte, adresssaAdressaContacte);
         }
         System.out.println("Adreces FIXES del contacte afegides amb èxit!!");
+
     }
 
     // afegirContacteFix afegit per la correcció
@@ -213,6 +214,9 @@ public class AppAgenda {
 
         String nomFitxerCorreccio = NOM_FITXER + EXTENSIO_FITXER;
         preparaFitxerAgenda(nomFitxerCorreccio);
+
+        // Es carrega a l'agenda el contingut del fitxer
+        Agenda agenda = new Agenda(recuperarAgenda(nomFitxerCorreccio));
         mostraContingutFitxer(nomFitxerCorreccio);
         pitjaIntroPerContinuar();
 
@@ -246,7 +250,7 @@ public class AppAgenda {
 
         // Mirem si hi ha un arxiu amb el nom del fitxer amb l'Agenda
         if(fitxerTrobat(nomFitxerAmbAgenda) != null){
-            // S'ha trobat un arxiu
+            // S'ha trobat un arxiu i es carrega a l'agenda el contingut del fitxer
             agenda = new Agenda(recuperarAgenda(nomFitxerAmbAgenda));
         }
         String[] opcions = {

@@ -17,63 +17,57 @@ public class SolucioAlumnes {
 
     public static boolean guardarAgenda(String nomArxiu)
             throws IOException {
-        // Desa el contingut de la classes.Agenda.getLlistaContactes
-        // importada a l'arxiu especificat pel paràmetre.
+        // desa el contingut de la col·lecció donada en el primer paràmetre
+        // a l'arxiu especificat pel segon paràmetre.
         boolean guardatCorrecte = false;
         if (getLlistaContactes().isEmpty()) {
-            System.out.println("Agenda buida, no hi ha res a guardar!");
+            System.out.println("Agenda buida");
         } else {
-            BufferedWriter buw;
             try {
-                buw = new BufferedWriter(new FileWriter(nomArxiu));
+                FileWriter fileWriter = new FileWriter(nomArxiu);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
                 for (Contacte contacte : getLlistaContactes()) {
-                    // Escriure el nom del contacte més el salt de línia
-                    buw.write(contacte.getNom()); buw.newLine();
-                    // Escriure el cognom del contacte més el salt de línia
-                    buw.write(contacte.getCognom()); buw.newLine();
-                    // Obtenir TOTS els telèfons del contacte per poder
-                    // iterar sobre TOTS els telèfons del contacte.
+                    bufferedWriter.write(contacte.getNom());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(contacte.getCognom());
+                    bufferedWriter.newLine();
+
                     for (Telefon telefon : contacte.getLlistaTelefons()) {
-                        // Escriure el número del telèfon del contacte
-                        buw.write(String.valueOf(telefon.getNumeroTelefon()));
-                        // seguit del separador de l'etiqueta del telèfon i el número de teléfon.
-                        buw.write(SEPARADOR_ETIQUETA_TELEFON);
-                        // més escriure l'etiqueta del telèfon del contacte més el salt de línia
-                        buw.write(telefon.getEtiqueta()); buw.newLine();
+                        bufferedWriter.write(telefon.getNumeroTelefon() + SEPARADOR_ETIQUETA_TELEFON + telefon.getEtiqueta());
+                        bufferedWriter.newLine();
                     }
-                    buw.write(MARCA_FINAL_TELEFONS); buw.newLine();
-                    // desar marca de MARCA_FINAL_TELEFONS per indicar
-                    // que ja no hi ha més telèfons del contacte
+                    bufferedWriter.write(MARCA_FINAL_TELEFONS);
+                    bufferedWriter.newLine();
 
                     if (contacte.getLlistaAdreces() == null) {
-                        System.out.printf("No hi ha adreces per guardar!");
+                        System.out.println("No hi ha adresses per guardar");
                     } else {
-                        // Obtenir TOTES les adreces del contacte per poder
                         for (Adressa adressa : contacte.getLlistaAdreces()) {
-                            buw.write(adressa.getEtiqueta()); buw.newLine();
-                            // iterar sobre TOTES les adreces del contacte.
-                            buw.write(adressa.getCarrer()); buw.newLine();
-                            // Escriure el nom del carrer de l'adreça del contacte més el salt de línia
-                            buw.write(String.valueOf(adressa.getNumeroCarrer())); buw.newLine();
-                            // Escriure el número del carrer de l'adreça del contacte més el salt de línia
-                            buw.write(adressa.getCodiPostal()); buw.newLine();
-                            // Escriure el codi postal del carrer de l'adreça del contacte més el salt de línia
-                            buw.write(adressa.getCiutat()); buw.newLine();
-                            // Escriure el nom de la ciutat de l'adreça del contacte més el salt de línia
-                            buw.write(adressa.getPais()); buw.newLine();
-                            // Escriure el nom del país de l'adreça del contacte més el salt de línia
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCarrer());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(Integer.toString(adressa.getNumeroCarrer()));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCodiPostal());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCiutat());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getPais());
+                            bufferedWriter.newLine();
                         }
-                        buw.write(MARCA_FINAL_ADRECES); buw.newLine();
-                        // desar marca de MARCA_FINAL_ADRESSES de la seqüència de telèfons  més el salt de línia
                     }
+
+                    bufferedWriter.write(MARCA_FINAL_ADRECES);
+                    bufferedWriter.newLine();
                 }
-                System.out.println("Agenda guardada al fitxer " +
-                        nomArxiu + "!");
+
+                bufferedWriter.close();
+                fileWriter.close();
+                System.out.println("Agenda guardada al fitxer " + nomArxiu + "!");
                 guardatCorrecte = true;
-                buw.close();
             } catch (IOException e) {
                 System.out.println("Problemes a l'hora de llegir el fitxer de contactes!");
-                // O millor, mostra un missatge d'error a l'usuari
                 e.printStackTrace();
             }
         }
