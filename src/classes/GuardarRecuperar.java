@@ -12,26 +12,27 @@ public class GuardarRecuperar {
     private static final String SEPARADOR_ETIQUETA_TELEFON = "#";
 
     public static LinkedList<Contacte> recuperarAgenda(String nomArxiu) throws IOException {
-        BufferedReader bur;
+        BufferedReader canalDeLectura;
         boolean hiHaTelefons = false;
         boolean hiHaAdreces = false;
-        bur = new BufferedReader(new FileReader(nomArxiu));
+
+        canalDeLectura = new BufferedReader(new FileReader(nomArxiu));
         LinkedList<Contacte> llistaContactes = new LinkedList<>();
 
-        String linia;
+        String linia;   // Variable que conté la línia llegida
         String[] dadesTelefon;
 
-        linia = bur.readLine();
-        while (linia != null) {
+        linia = canalDeLectura.readLine();
+        while (linia != null) { // Mentre hi hagi línies llegides
             // Inicialitzem les llistes
             LinkedList<Telefon> llistaTelefons = new LinkedList<>();
             LinkedList<Adressa> llistaAdreces = new LinkedList<>();
             // Llegir nom i cognom del contacte
             String nom = linia;
-            String cognom = bur.readLine();
+            String cognom = canalDeLectura.readLine();
             // llistaTelefons per afegir TOTS els telèfons llegits del contacte
             // Llegir l'etiqueta del telèfon del contacte
-            linia = bur.readLine();
+            linia = canalDeLectura.readLine();
             hiHaTelefons = (linia != null && !linia.equals(MARCA_FINAL_TELEFONS));
 //            hiHaContactes = !llistaContactes.isEmpty();
             while (hiHaTelefons) {
@@ -41,153 +42,86 @@ public class GuardarRecuperar {
                 int numeroTelefon = Integer.parseInt(dadesTelefon[0]);
                 String etiqueta = dadesTelefon[1];
                 llistaTelefons.add(new Telefon(numeroTelefon, etiqueta));
-                linia = bur.readLine();
+                linia = canalDeLectura.readLine();
                 hiHaTelefons = (linia != null && !linia.equals(MARCA_FINAL_TELEFONS));
             }
             if(linia.equals(MARCA_FINAL_TELEFONS)){
-                linia = bur.readLine();
+                linia = canalDeLectura.readLine();
             }
             hiHaAdreces = (linia != null && !linia.equals(MARCA_FINAL_ADRECES));
             // Pot ser MARCA_FINAL_ADRESSES, o etiqueta 1a Adreça
             while (hiHaAdreces) {
                 String etiqueta = linia;
-                String carrer = bur.readLine();
-                int numeroCarrer = Integer.parseInt(bur.readLine());
-                String codiPostal = bur.readLine();
-                String ciutat = bur.readLine();
-                String pais = bur.readLine();
+                String carrer = canalDeLectura.readLine();
+                int numeroCarrer = Integer.parseInt(canalDeLectura.readLine());
+                String codiPostal = canalDeLectura.readLine();
+                String ciutat = canalDeLectura.readLine();
+                String pais = canalDeLectura.readLine();
                 llistaAdreces.add(new Adressa(etiqueta, carrer, numeroCarrer, ciutat, codiPostal, pais));
-                linia = bur.readLine();
+                linia = canalDeLectura.readLine();
                 hiHaAdreces = (linia != null && !linia.equals(MARCA_FINAL_ADRECES));
             }
             Contacte contacte = new Contacte(nom, cognom, llistaTelefons, llistaAdreces);
             llistaContactes.add(contacte);
-            linia = bur.readLine();
+            linia = canalDeLectura.readLine();
         }
-        bur.close();
+        canalDeLectura.close();
         return llistaContactes;
     }
 
-//    public static boolean guardarAgendabad(String nomArxiu)
-//            throws IOException {
-//// desa el contingut de la col·lecció donada en el primer paràmetre
-//// a l'arxiu especificat pel segon paràmetre.
-//        boolean guardatCorrecte = false;
-//        if (getLlistaContactes().isEmpty()) {
-//            System.out.println("Agenda buida, no hi ha res a guardar!");
-//        } else {
-//
-//            try {
-//                BufferedWriter bw= new BufferedWriter(new FileWriter(nomArxiu));
-//                int prova = Character.getNumericValue(nomArxiu.charAt(0));
-//// Tipus de canal
-//                for (Contacte contacte : getLlistaContactes()) {
-//
-//// Escriure el nom del contacte ...
-//                    bw.write(contacte.getCognom());
-//                    bw.newLine();
-//// Escriure el cognom del contacte ...
-//                    bw.write(contacte.getCognom());
-//                    bw.newLine();
-//// Obtenir TOTS els telèfons del contacte per poder
-//// iterar sobre TOTS els telèfons del contacte.
-//                    for (Telefon telefon : contacte.getLlistaTelefons()) {
-//// Escriure el número del telèfon del contacte
-//                        bw.write(telefon.getNumeroTelefon());
-//// seguit del separador de l'etiqueta del telèfon i el número de teléfon.
-//                        bw.write(SEPARADOR_ETIQUETA_TELEFON);
-//
-//// més escriure l'etiqueta del telèfon del contacte més el salt de línia
-//                        bw.write(telefon.getEtiqueta());
-//                        bw.newLine();
-//                    }
-//
-//// desar marca de MARCA_FINAL_TELEFONS per indicar
-//// que ja no hi ha més telèfons del contacte
-//                    bw.write(MARCA_FINAL_TELEFONS);
-//                    bw.newLine();
-//                    if (contacte.getLlistaAdreces() == null) {
-//                        System.out.printf("No hi ha adreces per guardar!");
-//                    } else {
-//// Obtenir TOTES les adreces del contacte per poder
-//                        for (Adressa adressa : contacte.getLlistaAdreces()) {
-//
-//// iterar sobre TOTES les adreces del contacte.
-//
-//// Escriure el nom del carrer de l'adreça del contacte més el salt de línia
-//                            bw.write(adressa.getCarrer());
-//                            bw.newLine();
-//// Escriure el número del carrer de l'adreça del contacte més el salt de línia
-//                            bw.write(adressa.getNumeroCarrer());
-//                            bw.newLine();
-//// Escriure el codi postal del carrer de l'adreça del contacte més el salt de línia
-//                            bw.write(adressa.getCodiPostal());
-//                            bw.newLine();
-//// Escriure el nom de la ciutat de l'adreça del contacte més el salt de línia
-//                            bw.write(adressa.getCiutat());
-//                            bw.newLine();
-//// Escriure el nom del país de l'adreça del contacte més el salt de línia
-//                            bw.write(adressa.getPais());
-//                            bw.newLine();
-//                        }
-//
-//// desar marca de MARCA_FINAL_ADRESSES de la seqüència de telèfons més el salt de línia
-//                        bw.write(MARCA_FINAL_ADRECES);
-//                    }
-//                }
-//                System.out.println("Agenda guardada al fitxer " +
-//                        nomArxiu + "!");
-//                guardatCorrecte = true;
-//// Tancat canal
-//            } catch (Exception e) {
-//                System.out.println("Problemes a l'hora de llegir el fitxer de contactes!");
-//// O millor, mostra un missatge d'error a l'usuari
-//                e.printStackTrace(); }
-//        }
-//        return guardatCorrecte;
-//    }
+    public static boolean guardarAgenda(String nomArxiu) throws IOException {
+        boolean guardatCorrecte = false;
+        if (getLlistaContactes().isEmpty()) {
+            System.out.println("Agenda buida");
+        } else {
+            try {
+                FileWriter fileWriter = new FileWriter(nomArxiu);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
+                for (Contacte contacte : getLlistaContactes()) {
+                    bufferedWriter.write(contacte.getNom());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(contacte.getCognom());
+                    bufferedWriter.newLine();
 
+                    for (Telefon telefon : contacte.getLlistaTelefons()) {
+                        bufferedWriter.write(telefon.getNumeroTelefon() + SEPARADOR_ETIQUETA_TELEFON + telefon.getEtiqueta());
+                        bufferedWriter.newLine();
+                    }
+                    bufferedWriter.write(MARCA_FINAL_TELEFONS);
+                    bufferedWriter.newLine();
 
-//    public static boolean guardarAgendaProfe(String nomArxiu) throws IOException {
-//        boolean guardatCorrecte = false;
-//        if (getLlistaContactes().isEmpty()) {
-//            System.out.println("Agenda buida, no hi ha res a guardar!");
-//        } else {
-//            try (BufferedWriter bw = new BufferedWriter(new FileWriter(nomArxiu))) {
-//                for (Contacte contacte : getLlistaContactes()) {
-//                    bw.write(contacte.getNom());
-//                    bw.newLine();
-//                    bw.write(contacte.getCognom());
-//                    bw.newLine();
-//
-//                    for (Telefon telefon : contacte.getLlistaTelefons()) {
-//                        bw.write(telefon.getNumeroTelefon() + SEPARADOR_ETIQUETA_TELEFON + telefon.getEtiqueta());
-//                        bw.newLine();
-//                    }
-//
-//                    bw.write(MARCA_FINAL_TELEFONS);
-//                    bw.newLine();
-//
-//                    for (Adressa adressa : contacte.getLlistaAdreces()) {
-//                        bw.write(adressa.getEtiqueta()); bw.newLine();
-//                        bw.write(adressa.getCarrer()); bw.newLine();
-//                        bw.write(Integer.toString(adressa.getNumeroCarrer())); bw.newLine();
-//                        bw.write(adressa.getCodiPostal()); bw.newLine();
-//                        bw.write(adressa.getCiutat()); bw.newLine();
-//                        bw.write(adressa.getPais()); bw.newLine();
-//                    }
-//
-//                    bw.write(MARCA_FINAL_ADRECES);
-//                    bw.newLine();
-//                }
-//                System.out.println("Agenda guardada al fitxer " + nomArxiu + "!");
-//                guardatCorrecte = true;
-//            } catch (Exception e) {
-//                System.out.println("Problemes a l'hora de llegir el fitxer de contactes!");
-//                e.printStackTrace();
-//            }
-//        }
-//        return guardatCorrecte;
-//    }
+                    if (contacte.getLlistaAdreces() == null) {
+                        System.out.println("No hi ha adresses per guardar");
+                    } else {
+                        for (Adressa adressa : contacte.getLlistaAdreces()) {
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCarrer());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(Integer.toString(adressa.getNumeroCarrer()));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCodiPostal());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getCiutat());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(adressa.getPais());
+                            bufferedWriter.newLine();
+                        }
+                    }
+
+                    bufferedWriter.write(MARCA_FINAL_ADRECES);
+                    bufferedWriter.newLine();
+                }
+
+                bufferedWriter.close();
+                fileWriter.close();
+                System.out.println("Agenda guardada al fitxer " + nomArxiu + "!");
+                guardatCorrecte = true;
+            } catch (IOException e) {
+                System.out.println("Problemes a l'hora de llegir el fitxer de contactes!");
+                e.printStackTrace();
+            }
+        }
+        return guardatCorrecte;
+    }
 }
