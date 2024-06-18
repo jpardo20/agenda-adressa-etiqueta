@@ -267,3 +267,6 @@ Ens hem trobat amb diferents escenaris:
 Cal comentar que en tots els casos que **no ha funcionat correctament el codi**, s'ha verificat quina era la naturalesa de l'error, i s'ha avaluat en funció d'aquesta.
 
 Però **SEMPRE** s'ha avaluat a partir de **si el mètode ha funcionat o no**. I si **no ha funcionat**, per un petit detall s'ha puntuat amb un **`4`**, ja que **no ha funcionat**, però si el motiu pel qual no ha funcionat **ha estat major**, llavors s'ha reduït la puntuació en funció de quin o quins han estat el motiu o els motius pels quals no ha funcionat. 
+
+
+La solució a l'exercici la podeu trovar a [GuardarRecuperarSol.java](src/classes/GuardarRecuperarSol.java)
